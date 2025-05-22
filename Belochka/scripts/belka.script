@@ -1,0 +1,21 @@
+local input_right = hash("right")
+local input_left = hash("left")
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.velocity = vmath.vector3()
+end
+
+function on_input(self, action_id, action)
+	if action_id == input_right and action.pressed then
+		-- двигаем вправо
+		local pos = go.get_position()
+		pos.x = pos.x + 100
+		go.set_position(pos)
+	elseif action_id == input_left and action.pressed then
+		-- двигаем влево
+		local pos = go.get_position()
+		pos.x = pos.x - 100
+		go.set_position(pos)
+	end
+end
