@@ -18,16 +18,16 @@
         :scene
       ]
       [
-        "/scripts/belka.script"
-        :code
-      ]
-      [
         "/game.project"
         :cljfx-form-view
       ]
       [
         "/README.md"
         :html
+      ]
+      [
+        "/scripts/belka.script"
+        :code
       ]
       [
         "/main/main.collection"

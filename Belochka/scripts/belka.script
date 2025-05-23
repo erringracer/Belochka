@@ -1,21 +1,55 @@
 local input_right = hash("right")
 local input_left = hash("left")
+local move_acceleration = 4000
+local max_speed = 300
+local gravity = -1000
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	self.velocity = vmath.vector3()
+	self.velocity = vmath.vector3(0, 0, 0)
+	self.move_input = 0
+end
+
+function update(self, dt)
+	-- определяем нужную скорость, основываясь на вводе
+	local target_speed = self.move_input * max_speed
+	-- вычисляем разницу между нужной скоростью и текущей
+	local speed_dif = target_speed - self.velocity.x
+	-- определяем направление ускорения
+	local acceleration = vmath.vector3(0, gravity, 0)
+	-- направляем скорость по двум осям
+	if speed_dif ~= 0 then
+		if speed_dif < 0 then
+			acceleration.x = -move_acceleration
+		else
+			acceleration.x = move_acceleration
+		end
+	end
+	-- высчитываем изменение velocity за этот кадр, считаем через переменную dv (delta-velocity) 
+	local dv = acceleration * dt
+	-- проверяем, не выходит ли разница скоростей за нужную
+	if math.abs(dv.x) > math.abs(speed_dif) then
+		-- чтобы не выёбывалась
+		dv.x = speed_dif
+	end
+	-- сохраняем текущую скорость на всякий
+	local v0 = self.velocity
+	-- высчитываем новую скорость, основываясь на её изменении
+	self.velocity = self.velocity + dv
+	-- высчитываем перемещение за этот кадр, интегрируя скорость
+	local dx = (v0 + self.velocity) * dt * 0.5
+	-- и применяем это к персонажу игрока!!!!
+	go.set_position(go.get_position() + dx)
 end
 
 function on_input(self, action_id, action)
-	if action_id == input_right and action.pressed then
+	if action_id == hash("right") then
 		-- двигаем вправо
-		local pos = go.get_position()
-		pos.x = pos.x + 100
-		go.set_position(pos)
-	elseif action_id == input_left and action.pressed then
-		-- двигаем влево
-		local pos = go.get_position()
-		pos.x = pos.x - 100
-		go.set_position(pos)
+		self.move_input = action.value
+	else
+		if action_id == hash("left") then
+			-- двигаем вправо
+			self.move_input = -action.value
+		end
 	end
 end
