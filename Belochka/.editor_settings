@@ -10,28 +10,40 @@
         :cljfx-form-view
       ]
       [
-        "/main/main.script"
+        "/README.md"
+        :html
+      ]
+      [
+        "/main/static.atlas"
+        :scene
+      ]
+      [
+        "/scripts/borders.script"
         :code
       ]
       [
-        "/main/belka.collection"
-        :scene
+        "/scripts/level.script"
+        :code
       ]
       [
         "/game.project"
         :cljfx-form-view
       ]
       [
-        "/README.md"
-        :html
+        "/main/belka.collection"
+        :scene
       ]
       [
-        "/scripts/belka.script"
+        "/main/main.script"
         :code
       ]
       [
         "/main/main.collection"
         :scene
+      ]
+      [
+        "/scripts/belka.script"
+        :code
       ]
     ]
   }
